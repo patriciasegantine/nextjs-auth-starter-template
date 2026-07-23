@@ -7,7 +7,8 @@ import { registrationSchema } from "@/lib/auth-validation";
 
 type FormField = "name" | "email" | "password" | "confirmation";
 type FormFeedback =
-  | { type: "idle" | "submitting" | "account-exists" }
+  | { type: "idle" | "account-exists" }
+  | { type: "submitting"; method: "email" | "google" }
   | { type: "error"; message: string };
 
 const initialFormData: Record<FormField, string> = {
@@ -41,7 +42,7 @@ export function useRegistrationForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setFeedback({ type: "submitting" });
+    setFeedback({ type: "submitting", method: "email" });
 
     const result = registrationSchema.safeParse({
       name: formData.name,
@@ -88,6 +89,30 @@ export function useRegistrationForm() {
     }
   }
 
+  async function handleGoogleSignIn() {
+    setFeedback({ type: "submitting", method: "google" });
+
+    try {
+      const result = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/session",
+      });
+
+      if (result.error) {
+        setFeedback({
+          type: "error",
+          message: result.error.message ?? "Google sign-in failed.",
+        });
+      }
+    } catch {
+      setFeedback({
+        type: "error",
+        message:
+          "We could not connect to Google. Check your connection and try again.",
+      });
+    }
+  }
+
   return {
     formData,
     feedback,
@@ -96,5 +121,6 @@ export function useRegistrationForm() {
     emailInvalid,
     updateField,
     handleSubmit,
+    handleGoogleSignIn,
   };
 }

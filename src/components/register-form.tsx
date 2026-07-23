@@ -1,10 +1,15 @@
 "use client";
 
 import { FormTextField } from "@/components/form-text-field";
+import { GoogleAuthButton } from "@/components/google-auth-button";
 import { RegisterPasswordFields } from "@/components/register-password-fields";
 import { useRegistrationForm } from "@/hooks/use-registration-form";
 
-export function RegisterForm() {
+type RegisterFormProps = {
+  googleEnabled: boolean;
+};
+
+export function RegisterForm({ googleEnabled }: RegisterFormProps) {
   const {
     formData,
     feedback,
@@ -13,6 +18,7 @@ export function RegisterForm() {
     emailInvalid,
     updateField,
     handleSubmit,
+    handleGoogleSignIn,
   } = useRegistrationForm();
   const { name, email, password, confirmation } = formData;
 
@@ -104,11 +110,20 @@ export function RegisterForm() {
           disabled={feedback.type === "submitting" || !isValid}
           className="h-11 w-full cursor-pointer rounded-xl bg-black text-sm font-semibold text-white transition hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {feedback.type === "submitting"
+          {feedback.type === "submitting" && feedback.method === "email"
             ? "Creating account…"
             : "Create account"}
         </button>
       </form>
+
+      <GoogleAuthButton
+        enabled={googleEnabled}
+        disabled={feedback.type === "submitting"}
+        pending={
+          feedback.type === "submitting" && feedback.method === "google"
+        }
+        onClick={handleGoogleSignIn}
+      />
 
       <p className="mt-6 text-center text-sm text-black/50">
         Already have an account?{" "}
