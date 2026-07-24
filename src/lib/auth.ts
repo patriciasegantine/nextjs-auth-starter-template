@@ -3,6 +3,7 @@ import { waitUntil } from "@vercel/functions";
 import { betterAuth } from "better-auth";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
+import { openAPI } from "better-auth/plugins";
 import { db } from "@/lib/db";
 import {
   sendEmailVerificationEmail,
@@ -120,5 +121,10 @@ export const auth = betterAuth({
       }
     }),
   },
-  plugins: [nextCookies()],
+  plugins: [
+    nextCookies(),
+    openAPI({
+      disableDefaultReference: true,
+    }),
+  ],
 });
