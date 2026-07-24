@@ -71,3 +71,11 @@ export const loginSchema = z.object({
     .min(1, "Enter your password")
     .max(128, "Password must be no more than 128 characters"),
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Enter a valid email address"),
+});
