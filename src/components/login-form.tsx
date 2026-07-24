@@ -47,14 +47,11 @@ function LoginFormContent({
     isValid,
     emailInvalid,
     updateField,
+    handlePasswordRecovery,
     handleSubmit,
     handleGoogleSignIn,
   } = useLoginForm(initialEmail);
   const isSubmitting = feedback.type === "submitting";
-
-  function showUpcomingPasswordRecovery() {
-    window.alert("Password recovery will be available in the next step.");
-  }
 
   return (
     <div className="w-full max-w-lg rounded-[2rem] border border-black/10 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.08)] sm:px-9 sm:py-8">
@@ -89,7 +86,7 @@ function LoginFormContent({
           action={
             <button
               type="button"
-              onClick={showUpcomingPasswordRecovery}
+              onClick={handlePasswordRecovery}
               className="cursor-pointer text-xs font-medium text-black/45 hover:text-black hover:underline"
             >
               Forgot password?

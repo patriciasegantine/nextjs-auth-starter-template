@@ -81,17 +81,12 @@ export function RegisterForm({ googleEnabled }: RegisterFormProps) {
                 Sign in
               </Link>{" "}
               or{" "}
-              <button
-                type="button"
-                onClick={() =>
-                  window.alert(
-                    "Password recovery will be available in the next step.",
-                  )
-                }
-                className="cursor-pointer font-semibold underline"
+              <Link
+                href="/forgot-password"
+                className="font-semibold underline"
               >
                 reset your password
-              </button>
+              </Link>
               .
             </p>
           </div>
