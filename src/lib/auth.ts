@@ -3,7 +3,11 @@ import { betterAuth } from "better-auth";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { db } from "@/lib/db";
-import { sendPasswordResetEmail } from "@/lib/email";
+import {
+  sendEmailVerificationEmail,
+  sendPasswordResetEmail,
+  sendWelcomeEmail,
+} from "@/lib/email";
 import { registrationRequestSchema } from "@/lib/auth-validation";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
@@ -14,8 +18,51 @@ export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          if (!user.emailVerified) {
+            return;
+          }
+
+          try {
+            await sendWelcomeEmail({
+              to: user.email,
+              name: user.name,
+            });
+          } catch (error) {
+            console.error("[auth] Welcome email delivery failed.", error);
+          }
+        },
+      },
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    expiresIn: 60 * 60,
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendEmailVerificationEmail({
+        to: user.email,
+        name: user.name,
+        verificationUrl: url,
+      });
+    },
+    afterEmailVerification: async (user) => {
+      try {
+        await sendWelcomeEmail({
+          to: user.email,
+          name: user.name,
+        });
+      } catch (error) {
+        console.error("[auth] Welcome email delivery failed.", error);
+      }
+    },
+  },
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
     revokeSessionsOnPasswordReset: true,
     sendResetPassword: async ({ user, url }) => {
       await sendPasswordResetEmail({
