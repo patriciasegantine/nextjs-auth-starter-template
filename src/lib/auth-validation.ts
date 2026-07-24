@@ -89,3 +89,7 @@ export const resetPasswordSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const resetPasswordRequestSchema = z.object({
+  newPassword: strongPasswordSchema,
+});
