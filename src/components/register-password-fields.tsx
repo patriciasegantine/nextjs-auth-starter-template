@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useState, type FocusEvent } from "react";
+import { FormPasswordField } from "@/components/form-password-field";
 import { PasswordRules } from "@/components/password-rules";
 
 type RegisterPasswordFieldsProps = {
@@ -17,109 +17,58 @@ export function RegisterPasswordFields({
   onPasswordChange,
   onConfirmationChange,
 }: RegisterPasswordFieldsProps) {
-  const [visibility, setVisibility] = useState({
-    password: false,
-    confirmation: false,
-  });
+  const [showRules, setShowRules] = useState(false);
   const mismatch = confirmation.length > 0 && password !== confirmation;
   const passwordsMatch =
     confirmation.length > 0 && password === confirmation;
 
+  function handleBlur(event: FocusEvent<HTMLDivElement>) {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setShowRules(false);
+    }
+  }
+
   return (
-    <div className="space-y-4">
-      <PasswordField
+    <div
+      className="relative space-y-3.5"
+      onFocusCapture={() => setShowRules(true)}
+      onBlurCapture={handleBlur}
+    >
+      <FormPasswordField
         id="register-password"
         label="Password"
         name="password"
         value={password}
-        visible={visibility.password}
+        autoComplete="new-password"
         onChange={onPasswordChange}
-        onVisibilityChange={() =>
-          setVisibility((current) => ({
-            ...current,
-            password: !current.password,
-          }))
-        }
       />
-      <PasswordField
+      <FormPasswordField
         id="register-password-confirmation"
         label="Confirm password"
         name="confirmation"
         value={confirmation}
-        visible={visibility.confirmation}
+        autoComplete="new-password"
         invalid={mismatch}
         onChange={onConfirmationChange}
-        onVisibilityChange={() =>
-          setVisibility((current) => ({
-            ...current,
-            confirmation: !current.confirmation,
-          }))
-        }
       />
       {mismatch && (
         <p className="-mt-2 text-sm text-red-700" role="alert">
           Passwords do not match.
         </p>
       )}
-      <PasswordRules
-        password={password}
-        passwordsMatch={passwordsMatch}
-      />
+      {showRules && (
+        <>
+          <PasswordRules
+            password={password}
+            passwordsMatch={passwordsMatch}
+            className="xl:absolute xl:left-[calc(100%+1rem)] xl:top-0 xl:z-10 xl:mt-0 xl:w-72 xl:bg-white xl:shadow-[0_18px_50px_rgba(0,0,0,0.12)]"
+          />
+          <span
+            aria-hidden="true"
+            className="absolute left-full top-8 z-20 ml-2 hidden size-4 rotate-45 border-b border-l border-black/[0.07] bg-white xl:block"
+          />
+        </>
+      )}
     </div>
-  );
-}
-
-type PasswordFieldProps = {
-  id: string;
-  label: string;
-  name: string;
-  value: string;
-  visible: boolean;
-  invalid?: boolean;
-  onChange: (value: string) => void;
-  onVisibilityChange: () => void;
-};
-
-function PasswordField({
-  id,
-  label,
-  name,
-  value,
-  visible,
-  invalid = false,
-  onChange,
-  onVisibilityChange,
-}: PasswordFieldProps) {
-  return (
-    <label htmlFor={id} className="block text-sm font-medium">
-      <span className="mb-2 block">{label}</span>
-      <span className="relative block">
-        <input
-          required
-          id={id}
-          name={name}
-          type={visible ? "text" : "password"}
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          autoComplete="new-password"
-          aria-invalid={invalid}
-          className={`h-11 w-full rounded-xl border bg-white px-3 pr-11 font-normal transition focus:border-black ${
-            invalid ? "border-red-400" : "border-black/15"
-          }`}
-        />
-        <button
-          type="button"
-          onClick={onVisibilityChange}
-          aria-label={visible ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`}
-          className="absolute inset-y-0 right-0 grid w-11 place-items-center text-black/40 transition hover:text-black"
-        >
-          {visible ? (
-            <EyeOff aria-hidden="true" className="size-[18px]" />
-          ) : (
-            <Eye aria-hidden="true" className="size-[18px]" />
-          )}
-        </button>
-      </span>
-    </label>
   );
 }
