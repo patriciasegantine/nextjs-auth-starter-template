@@ -79,3 +79,13 @@ export const forgotPasswordSchema = z.object({
     .toLowerCase()
     .email("Enter a valid email address"),
 });
+
+export const resetPasswordSchema = z
+  .object({
+    password: strongPasswordSchema,
+    confirmPassword: z.string().min(1, "Confirm your password"),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
