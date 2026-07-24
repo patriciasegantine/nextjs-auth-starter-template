@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { saveAuthEmailDraft } from "@/lib/auth-email-draft";
 import { registrationSchema } from "@/lib/auth-validation";
 
 type FormField = "name" | "email" | "password" | "confirmation";
@@ -64,6 +65,7 @@ export function useRegistrationForm() {
         name: result.data.name,
         email: result.data.email,
         password: result.data.password,
+        callbackURL: "/session",
       });
 
       if (signUpResult.error) {
@@ -78,7 +80,8 @@ export function useRegistrationForm() {
         return;
       }
 
-      router.push("/session");
+      saveAuthEmailDraft(result.data.email);
+      router.push("/verify-email");
       router.refresh();
     } catch {
       setFeedback({
