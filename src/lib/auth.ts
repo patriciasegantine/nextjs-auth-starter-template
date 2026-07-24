@@ -1,4 +1,5 @@
 import { prismaAdapter } from "@better-auth/prisma-adapter";
+import { waitUntil } from "@vercel/functions";
 import { betterAuth } from "better-auth";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
@@ -8,7 +9,10 @@ import {
   sendPasswordResetEmail,
   sendWelcomeEmail,
 } from "@/lib/email";
-import { registrationRequestSchema } from "@/lib/auth-validation";
+import {
+  registrationRequestSchema,
+  resetPasswordRequestSchema,
+} from "@/lib/auth-validation";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -18,6 +22,11 @@ export const auth = betterAuth({
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
+  advanced: {
+    backgroundTasks: {
+      handler: waitUntil,
+    },
+  },
   databaseHooks: {
     user: {
       create: {
@@ -84,16 +93,29 @@ export const auth = betterAuth({
       : {},
   hooks: {
     before: createAuthMiddleware(async (context) => {
-      if (context.path !== "/sign-up/email") {
+      if (context.path === "/sign-up/email") {
+        const result = registrationRequestSchema.safeParse(context.body);
+
+        if (!result.success) {
+          throw new APIError("BAD_REQUEST", {
+            message:
+              result.error.issues[0]?.message ??
+              "Invalid registration details",
+          });
+        }
+
         return;
       }
 
-      const result = registrationRequestSchema.safeParse(context.body);
+      if (context.path !== "/reset-password") {
+        return;
+      }
 
+      const result = resetPasswordRequestSchema.safeParse(context.body);
       if (!result.success) {
         throw new APIError("BAD_REQUEST", {
           message:
-            result.error.issues[0]?.message ?? "Invalid registration details",
+            result.error.issues[0]?.message ?? "Invalid password",
         });
       }
     }),

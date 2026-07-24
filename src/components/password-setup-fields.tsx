@@ -4,19 +4,25 @@ import { useState, type FocusEvent } from "react";
 import { FormPasswordField } from "@/components/form-password-field";
 import { PasswordRules } from "@/components/password-rules";
 
-type RegisterPasswordFieldsProps = {
+type PasswordSetupFieldsProps = {
+  idPrefix: string;
   password: string;
   confirmation: string;
+  passwordLabel?: string;
+  confirmationLabel?: string;
   onPasswordChange: (value: string) => void;
   onConfirmationChange: (value: string) => void;
 };
 
-export function RegisterPasswordFields({
+export function PasswordSetupFields({
+  idPrefix,
   password,
   confirmation,
+  passwordLabel = "Password",
+  confirmationLabel = "Confirm password",
   onPasswordChange,
   onConfirmationChange,
-}: RegisterPasswordFieldsProps) {
+}: PasswordSetupFieldsProps) {
   const [showRules, setShowRules] = useState(false);
   const mismatch = confirmation.length > 0 && password !== confirmation;
   const passwordsMatch =
@@ -35,16 +41,16 @@ export function RegisterPasswordFields({
       onBlurCapture={handleBlur}
     >
       <FormPasswordField
-        id="register-password"
-        label="Password"
+        id={`${idPrefix}-password`}
+        label={passwordLabel}
         name="password"
         value={password}
         autoComplete="new-password"
         onChange={onPasswordChange}
       />
       <FormPasswordField
-        id="register-password-confirmation"
-        label="Confirm password"
+        id={`${idPrefix}-password-confirmation`}
+        label={confirmationLabel}
         name="confirmation"
         value={confirmation}
         autoComplete="new-password"

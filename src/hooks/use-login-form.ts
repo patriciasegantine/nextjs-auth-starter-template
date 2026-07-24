@@ -33,6 +33,18 @@ export function useLoginForm(initialEmail: string) {
     setFeedback({ type: "idle" });
   }
 
+  function handlePasswordRecovery() {
+    const email = loginSchema.shape.email.safeParse(formData.email);
+
+    if (email.success) {
+      saveAuthEmailDraft(email.data);
+    } else {
+      clearAuthEmailDraft();
+    }
+
+    router.push("/forgot-password");
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -111,6 +123,7 @@ export function useLoginForm(initialEmail: string) {
     isValid: validation.success,
     emailInvalid,
     updateField,
+    handlePasswordRecovery,
     handleSubmit,
     handleGoogleSignIn,
   };

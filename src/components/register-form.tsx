@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AuthBrand } from "@/components/auth-brand";
 import { FormTextField } from "@/components/form-text-field";
 import { GoogleAuthButton } from "@/components/google-auth-button";
-import { RegisterPasswordFields } from "@/components/register-password-fields";
+import { PasswordSetupFields } from "@/components/password-setup-fields";
 import { useRegistrationForm } from "@/hooks/use-registration-form";
 
 type RegisterFormProps = {
@@ -58,7 +58,8 @@ export function RegisterForm({ googleEnabled }: RegisterFormProps) {
           error={emailInvalid ? "Enter a valid email address." : undefined}
           onChange={(value) => updateField("email", value)}
         />
-        <RegisterPasswordFields
+        <PasswordSetupFields
+          idPrefix="register"
           password={password}
           confirmation={confirmation}
           onPasswordChange={(value) => updateField("password", value)}
@@ -81,17 +82,12 @@ export function RegisterForm({ googleEnabled }: RegisterFormProps) {
                 Sign in
               </Link>{" "}
               or{" "}
-              <button
-                type="button"
-                onClick={() =>
-                  window.alert(
-                    "Password recovery will be available in the next step.",
-                  )
-                }
-                className="cursor-pointer font-semibold underline"
+              <Link
+                href="/forgot-password"
+                className="font-semibold underline"
               >
                 reset your password
-              </button>
+              </Link>
               .
             </p>
           </div>

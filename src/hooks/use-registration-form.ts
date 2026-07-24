@@ -69,14 +69,18 @@ export function useRegistrationForm() {
       });
 
       if (signUpResult.error) {
-        setFeedback(
+        if (
           signUpResult.error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL"
-            ? { type: "account-exists" }
-            : {
-                type: "error",
-                message: "We could not create your account. Please try again.",
-              },
-        );
+        ) {
+          saveAuthEmailDraft(result.data.email);
+          setFeedback({ type: "account-exists" });
+          return;
+        }
+
+        setFeedback({
+          type: "error",
+          message: "We could not create your account. Please try again.",
+        });
         return;
       }
 
