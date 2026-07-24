@@ -3,9 +3,11 @@ import { passwordRules } from "@/lib/auth-validation";
 export function PasswordRules({
   password,
   passwordsMatch,
+  className = "",
 }: {
   password: string;
   passwordsMatch: boolean;
+  className?: string;
 }) {
   const rules = [
     ...passwordRules.map((rule) => ({
@@ -21,7 +23,7 @@ export function PasswordRules({
 
   return (
     <div
-      className="rounded-xl border border-black/[0.07] bg-black/[0.025] p-4"
+      className={`rounded-xl border border-black/[0.07] bg-black/[0.025] p-4 ${className}`}
       aria-live="polite"
     >
       <div className="mb-3 flex items-center justify-between gap-4">
@@ -32,7 +34,7 @@ export function PasswordRules({
           {completed}/{rules.length}
         </span>
       </div>
-      <ul className="grid gap-2 sm:grid-cols-2">
+      <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
         {rules.map((rule) => (
           <li
             key={rule.label}

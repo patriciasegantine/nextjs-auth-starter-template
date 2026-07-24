@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { AuthBrand } from "@/components/auth-brand";
 import { FormTextField } from "@/components/form-text-field";
 import { GoogleAuthButton } from "@/components/google-auth-button";
 import { RegisterPasswordFields } from "@/components/register-password-fields";
@@ -22,21 +24,17 @@ export function RegisterForm({ googleEnabled }: RegisterFormProps) {
   } = useRegistrationForm();
   const { name, email, password, confirmation } = formData;
 
-  function showUpcomingFlow(flow: "sign-in" | "password recovery") {
-    window.alert(`The ${flow} flow will be available in the next step.`);
-  }
-
   return (
-    <div className="w-full max-w-lg rounded-[2rem] border border-black/10 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.08)] sm:p-9">
-      <p className="text-sm font-medium text-black/45">Auth Starter</p>
-      <h1 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">
+    <div className="w-full max-w-lg rounded-[2rem] border border-black/10 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.08)] sm:px-9 sm:py-8">
+      <AuthBrand />
+      <h1 className="mt-6 text-3xl font-semibold tracking-[-0.04em]">
         Create your account
       </h1>
       <p className="mt-2 text-sm leading-6 text-black/55">
         Enter your details and choose a strong password to get started.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-7 space-y-4" noValidate>
+      <form onSubmit={handleSubmit} className="mt-6 space-y-3.5" noValidate>
         <FormTextField
           id="register-name"
           label="Name"
@@ -76,17 +74,20 @@ export function RegisterForm({ googleEnabled }: RegisterFormProps) {
           >
             <p>An account already uses this email.</p>
             <p className="mt-1 text-amber-900/70">
-              <button
-                type="button"
-                onClick={() => showUpcomingFlow("sign-in")}
-                className="cursor-pointer font-semibold underline"
+              <Link
+                href="/login"
+                className="font-semibold underline"
               >
                 Sign in
-              </button>{" "}
+              </Link>{" "}
               or{" "}
               <button
                 type="button"
-                onClick={() => showUpcomingFlow("password recovery")}
+                onClick={() =>
+                  window.alert(
+                    "Password recovery will be available in the next step.",
+                  )
+                }
                 className="cursor-pointer font-semibold underline"
               >
                 reset your password
@@ -125,15 +126,14 @@ export function RegisterForm({ googleEnabled }: RegisterFormProps) {
         onClick={handleGoogleSignIn}
       />
 
-      <p className="mt-6 text-center text-sm text-black/50">
+      <p className="mt-5 text-center text-sm text-black/50">
         Already have an account?{" "}
-        <button
-          type="button"
-          onClick={() => showUpcomingFlow("sign-in")}
-          className="cursor-pointer font-semibold text-black hover:underline"
+        <Link
+          href="/login"
+          className="font-semibold text-black hover:underline"
         >
           Sign in
-        </button>
+        </Link>
       </p>
     </div>
   );
