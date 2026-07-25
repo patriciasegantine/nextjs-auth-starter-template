@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PasswordSetupFields } from "@/components/password-setup-fields";
+import { PasswordSetupFields } from "@/components/form/password-setup-fields";
 import { useResetPasswordForm } from "@/hooks/use-reset-password-form";
 
 export function ResetPasswordForm({
@@ -61,16 +61,16 @@ export function ResetPasswordForm({
             className="mt-6 space-y-3.5"
             noValidate
           >
-          <PasswordSetupFields
-            idPrefix="reset"
-            password={formData.password}
-            confirmation={formData.confirmation}
-            passwordLabel="New password"
-            onPasswordChange={(value) => updateField("password", value)}
-            onConfirmationChange={(value) =>
-              updateField("confirmation", value)
-            }
-          />
+            <PasswordSetupFields
+              idPrefix="reset"
+              password={formData.password}
+              confirmation={formData.confirmation}
+              passwordLabel="New password"
+              onPasswordChange={(value) => updateField("password", value)}
+              onConfirmationChange={(value) =>
+                updateField("confirmation", value)
+              }
+            />
 
             {feedback.type === "error" && (
               <p

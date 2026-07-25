@@ -1,4 +1,4 @@
-import { SignOutButton } from "@/components/sign-out-button";
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import { SessionCard } from "@/components/session/session-card";
 
 type AuthenticatedSessionProps = {

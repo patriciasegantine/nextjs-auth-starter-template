@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
-import { FormTextField } from "@/components/form-text-field";
+import { FormTextField } from "@/components/form/form-text-field";
 import { useForgotPasswordForm } from "@/hooks/use-forgot-password-form";
 import {
   readAuthEmailDraft,

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
-import { FormPasswordField } from "@/components/form-password-field";
-import { FormTextField } from "@/components/form-text-field";
-import { GoogleAuthButton } from "@/components/google-auth-button";
+import { FormPasswordField } from "@/components/form/form-password-field";
+import { FormTextField } from "@/components/form/form-text-field";
+import { GoogleAuthButton } from "@/components/auth/google-auth-button";
 import { useLoginForm } from "@/hooks/use-login-form";
 import {
   readAuthEmailDraft,
