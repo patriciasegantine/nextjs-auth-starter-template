@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { FormTextField } from "@/components/form-text-field";
-import { GoogleAuthButton } from "@/components/google-auth-button";
-import { PasswordSetupFields } from "@/components/password-setup-fields";
+import { FormTextField } from "@/components/form/form-text-field";
+import { GoogleAuthButton } from "@/components/auth/google-auth-button";
+import { PasswordSetupFields } from "@/components/form/password-setup-fields";
 import { useRegistrationForm } from "@/hooks/use-registration-form";
 
 type RegisterFormProps = {

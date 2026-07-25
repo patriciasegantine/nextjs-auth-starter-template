@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, type FocusEvent } from "react";
-import { FormPasswordField } from "@/components/form-password-field";
-import { PasswordRules } from "@/components/password-rules";
+import { FormPasswordField } from "@/components/form/form-password-field";
+import { PasswordRules } from "@/components/form/password-rules";
 
 type PasswordSetupFieldsProps = {
   idPrefix: string;

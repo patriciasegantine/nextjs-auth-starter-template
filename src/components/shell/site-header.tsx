@@ -4,7 +4,7 @@ import {
   DOCUMENTATION_URL,
   REPOSITORY_URL,
 } from "@/lib/project-links";
-import { AuthBrand } from "./auth-brand";
+import { AuthBrand } from "@/components/auth/auth-brand";
 
 export function SiteHeader() {
   return (
