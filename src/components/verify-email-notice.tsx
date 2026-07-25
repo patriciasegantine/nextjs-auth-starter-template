@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { AuthBrand } from "@/components/auth-brand";
 import { authClient } from "@/lib/auth-client";
 import {
   readAuthEmailDraft,
@@ -62,9 +61,7 @@ export function VerifyEmailNotice() {
 
   return (
     <div className="w-full max-w-lg rounded-[2rem] border border-black/10 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.08)] sm:p-9">
-      <AuthBrand />
-
-      <h1 className="mt-10 text-3xl font-semibold tracking-[-0.04em]">
+      <h1 className="text-3xl font-semibold tracking-[-0.04em]">
         Check your email
       </h1>
       <p className="mt-4 text-sm leading-6 text-black/55">

@@ -1,9 +1,5 @@
 import { SignOutButton } from "@/components/sign-out-button";
-import {
-  ProjectLinks,
-  SessionBrand,
-  SessionCard,
-} from "@/components/session/session-card";
+import { SessionCard } from "@/components/session/session-card";
 
 type AuthenticatedSessionProps = {
   user: {
@@ -19,16 +15,15 @@ export function AuthenticatedSession({ user }: AuthenticatedSessionProps) {
 
   return (
     <SessionCard>
-      <div className="flex items-center justify-between gap-4">
-        <SessionBrand />
-        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
+      <div className="flex items-start justify-between gap-4">
+        <h1 className="text-3xl font-semibold tracking-[-0.045em]">
+          You&apos;re signed in
+        </h1>
+        <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
           <span className="size-2 rounded-full bg-emerald-500" />
           Session active
         </span>
       </div>
-      <h1 className="mt-10 text-4xl font-semibold tracking-[-0.045em]">
-        You&apos;re signed in
-      </h1>
       <p className="mt-4 text-base leading-7 text-black/55">
         Your identity has been verified in this browser.
       </p>
@@ -50,7 +45,6 @@ export function AuthenticatedSession({ user }: AuthenticatedSessionProps) {
         Your session stays active securely in this browser until you sign out
         or it expires.
       </p>
-      <ProjectLinks />
     </SessionCard>
   );
 }

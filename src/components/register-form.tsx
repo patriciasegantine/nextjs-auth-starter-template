@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { AuthBrand } from "@/components/auth-brand";
 import { FormTextField } from "@/components/form-text-field";
 import { GoogleAuthButton } from "@/components/google-auth-button";
 import { PasswordSetupFields } from "@/components/password-setup-fields";
@@ -26,8 +25,7 @@ export function RegisterForm({ googleEnabled }: RegisterFormProps) {
 
   return (
     <div className="w-full max-w-lg rounded-[2rem] border border-black/10 bg-white p-7 shadow-[0_24px_80px_rgba(0,0,0,0.08)] sm:px-9 sm:py-8">
-      <AuthBrand />
-      <h1 className="mt-6 text-3xl font-semibold tracking-[-0.04em]">
+      <h1 className="text-3xl font-semibold tracking-[-0.04em]">
         Create your account
       </h1>
       <p className="mt-2 text-sm leading-6 text-black/55">

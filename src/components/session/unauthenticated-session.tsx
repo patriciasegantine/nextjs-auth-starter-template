@@ -1,23 +1,18 @@
 import Link from "next/link";
-import {
-  ProjectLinks,
-  SessionBrand,
-  SessionCard,
-} from "@/components/session/session-card";
+import { SessionCard } from "@/components/session/session-card";
 
 export function UnauthenticatedSession() {
   return (
     <SessionCard>
-      <div className="flex items-center justify-between gap-4">
-        <SessionBrand />
-        <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+      <div className="flex items-start justify-between gap-4">
+        <h1 className="text-3xl font-semibold tracking-[-0.045em]">
+          You&apos;re not signed in
+        </h1>
+        <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
           <span className="size-2 rounded-full bg-amber-500" />
           No active session
         </span>
       </div>
-      <h1 className="mt-10 text-4xl font-semibold tracking-[-0.045em]">
-        You&apos;re not signed in
-      </h1>
       <p className="mt-4 text-base leading-7 text-black/55">
         Sign in to access your account, or create one if this is your first
         visit.
@@ -39,7 +34,6 @@ export function UnauthenticatedSession() {
       <p className="mt-8 border-t border-black/[0.07] pt-7 text-sm leading-6 text-black/55">
         Your account information remains private until you authenticate.
       </p>
-      <ProjectLinks />
     </SessionCard>
   );
 }
