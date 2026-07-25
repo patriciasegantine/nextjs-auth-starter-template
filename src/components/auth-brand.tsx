@@ -11,6 +11,9 @@ export function AuthBrand() {
         priority
       />
       <span>Auth Starter</span>
+      <span className="rounded-full bg-black/[0.07] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-emerald-900">
+        Demo
+      </span>
     </div>
   );
 }
