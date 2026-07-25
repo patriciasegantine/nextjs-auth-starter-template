@@ -19,7 +19,7 @@ const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
 export const auth = betterAuth({
-  appName: "Next.js Auth Starter",
+  appName: "Auth Starter Demo",
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
