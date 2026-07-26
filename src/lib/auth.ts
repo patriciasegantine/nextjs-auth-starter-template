@@ -18,11 +18,37 @@ import {
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
+const additionalTrustedOrigins = (process.env.TRUSTED_ORIGINS ?? "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+// Per-route overrides for the sensitive auth endpoints. `window` is in
+// seconds; `max` is the number of requests allowed per window per IP.
+const authRateLimitRules = {
+  "/sign-in/email": { window: 60, max: 5 },
+  "/sign-up/email": { window: 60 * 10, max: 5 },
+  "/forgot-password": { window: 60 * 15, max: 3 },
+  "/reset-password": { window: 60 * 15, max: 5 },
+  "/send-verification-email": { window: 60 * 15, max: 3 },
+};
+
 export const auth = betterAuth({
   appName: "Auth Starter Demo",
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
+  trustedOrigins: additionalTrustedOrigins,
+  rateLimit: {
+    enabled: true,
+    // Vercel functions are stateless across invocations, so in-memory
+    // (the better-auth default) would not actually limit anything in
+    // production; persist counters in Postgres instead.
+    storage: "database",
+    window: 60,
+    max: 20,
+    customRules: authRateLimitRules,
+  },
   advanced: {
     backgroundTasks: {
       handler: waitUntil,

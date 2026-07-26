@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { isRateLimitError, RATE_LIMIT_MESSAGE } from "@/lib/auth-error";
 import { forgotPasswordSchema } from "@/lib/auth-validation";
 
 const RESEND_COOLDOWN_SECONDS = 60;
@@ -67,7 +68,9 @@ export function useForgotPasswordForm(initialEmail: string) {
       if (result.error) {
         setFeedback({
           type: "error",
-          message: "We could not process the request. Please try again.",
+          message: isRateLimitError(result.error)
+            ? RATE_LIMIT_MESSAGE
+            : "We could not process the request. Please try again.",
         });
         return;
       }
