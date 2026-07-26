@@ -7,6 +7,7 @@ import {
   clearAuthEmailDraft,
   saveAuthEmailDraft,
 } from "@/lib/auth-email-draft";
+import { isRateLimitError, RATE_LIMIT_MESSAGE } from "@/lib/auth-error";
 import { loginSchema } from "@/lib/auth-validation";
 
 type LoginField = "email" | "password";
@@ -76,7 +77,9 @@ export function useLoginForm(initialEmail: string) {
 
         setFeedback({
           type: "error",
-          message: "Incorrect email or password.",
+          message: isRateLimitError(signInResult.error)
+            ? RATE_LIMIT_MESSAGE
+            : "Incorrect email or password.",
         });
         return;
       }

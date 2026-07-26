@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { saveAuthEmailDraft } from "@/lib/auth-email-draft";
+import { isRateLimitError, RATE_LIMIT_MESSAGE } from "@/lib/auth-error";
 import { registrationSchema } from "@/lib/auth-validation";
 
 type FormField = "name" | "email" | "password" | "confirmation";
@@ -79,7 +80,9 @@ export function useRegistrationForm() {
 
         setFeedback({
           type: "error",
-          message: "We could not create your account. Please try again.",
+          message: isRateLimitError(signUpResult.error)
+            ? RATE_LIMIT_MESSAGE
+            : "We could not create your account. Please try again.",
         });
         return;
       }

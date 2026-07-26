@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { isRateLimitError, RATE_LIMIT_MESSAGE } from "@/lib/auth-error";
 import { resetPasswordSchema } from "@/lib/auth-validation";
 
 type ResetPasswordFeedback =
@@ -64,7 +65,9 @@ export function useResetPasswordForm(token?: string) {
       if (resetResult.error) {
         setFeedback({
           type: "error",
-          message: "This reset link is invalid or expired.",
+          message: isRateLimitError(resetResult.error)
+            ? RATE_LIMIT_MESSAGE
+            : "This reset link is invalid or expired.",
         });
         return;
       }
