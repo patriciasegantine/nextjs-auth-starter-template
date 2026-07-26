@@ -20,13 +20,13 @@ export function UnauthenticatedSession() {
       <div className="mt-10 flex flex-col gap-3 sm:flex-row">
         <Link
           href="/login"
-          className="inline-flex h-12 flex-1 items-center justify-center rounded-xl bg-black px-5 text-sm font-semibold text-white transition hover:bg-black/80"
+          className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-black px-5 text-sm font-semibold text-white transition hover:bg-black/80 sm:flex-1 sm:w-auto"
         >
           Sign in
         </Link>
         <Link
           href="/register"
-          className="inline-flex h-12 flex-1 items-center justify-center rounded-xl border border-black/15 px-5 text-sm font-semibold transition hover:bg-black/[0.03]"
+          className="inline-flex h-12 w-full items-center justify-center rounded-xl border border-black/15 px-5 text-sm font-semibold transition hover:bg-black/[0.03] sm:flex-1 sm:w-auto"
         >
           Create account
         </Link>
