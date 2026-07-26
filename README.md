@@ -117,6 +117,7 @@ the sign-in page.
 | `DATABASE_URL` | Yes | PostgreSQL connection string |
 | `BETTER_AUTH_SECRET` | Yes | Signs and encrypts authentication data |
 | `BETTER_AUTH_URL` | Yes | Public base URL, without a trailing slash |
+| `TRUSTED_ORIGINS` | No | Comma-separated extra origins allowed to call the auth API (`BETTER_AUTH_URL` is trusted by default) |
 | `GOOGLE_CLIENT_ID` | No | Enables Google OAuth when paired with the client secret |
 | `GOOGLE_CLIENT_SECRET` | No | Google OAuth client secret |
 | `SMTP_HOST` | Production email | SMTP server hostname |
