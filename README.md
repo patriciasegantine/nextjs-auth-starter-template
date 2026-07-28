@@ -349,10 +349,12 @@ unless that is intentional.
 
 - Replace the starter name, logo, metadata, links, and email content.
 - Use a dedicated transactional email provider for production volume.
-- Add platform-appropriate rate limiting.
+- Review the built-in rate limit thresholds in `authRateLimitRules`
+  (`src/lib/auth/auth.ts`) against your expected traffic.
 - Review trusted origins and OAuth callback URLs.
 - Validate authorization on every private read and mutation.
-- Add automated tests for the authentication flows.
+- Extend the existing test suite to cover any authentication customizations
+  you add.
 - Review dependency alerts instead of running `npm audit fix --force` blindly.
 
 ## Resources
