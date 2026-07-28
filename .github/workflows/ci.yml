@@ -8,6 +8,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://test:test@localhost:5434/auth_starter_test"
+      BETTER_AUTH_SECRET: "test-secret-not-for-production-use-only-testing"
+      BETTER_AUTH_URL: "http://localhost:3000"
     steps:
       - uses: actions/checkout@v4
 
@@ -30,8 +34,4 @@ jobs:
         run: npm run test:integration
 
       - name: Build
-        run: |
-          set -a
-          source .env.test
-          set +a
-          npm run build
+        run: npm run build
