@@ -212,6 +212,10 @@ The underlying OpenAPI 3.1 schema is available at:
 http://localhost:3000/api/openapi.json
 ```
 
+Once deployed, both routes are served from your production domain instead.
+This starter's own demo has it live:
+[ps-nextjs-auth-starter-demo.vercel.app/api-reference](https://ps-nextjs-auth-starter-demo.vercel.app/api-reference).
+
 The Better Auth plugin can describe more endpoints than this starter exposes in
 its interface. To keep the reference focused, `src/app/api/openapi.json/route.ts`
 filters the generated schema to the flows implemented here:
@@ -275,7 +279,32 @@ page alone does not protect its underlying mutations.
 | `npm run db:migrate` | Create and apply a development migration |
 | `npm run db:deploy` | Apply committed migrations in production |
 | `npm run db:studio` | Inspect the database with Prisma Studio |
-| `npm run validate` | Run lint, typecheck, and production build |
+| `npm run test` | Run unit tests (schemas and form hooks) |
+| `npm run test:watch` | Run unit tests in watch mode |
+| `npm run test:integration` | Run integration tests against a local Postgres |
+| `npm run validate` | Run lint, typecheck, unit tests, and production build |
+
+## Testing
+
+Unit tests (`npm run test`) cover the Zod schemas in `auth-validation.ts` and
+the client-side form hooks in `src/hooks`, with `authClient` mocked. They
+need no database and run in a few hundred milliseconds.
+
+Integration tests (`npm run test:integration`) exercise the real better-auth
+server API — registration, email verification, login, and password
+recovery — against a disposable local Postgres container. The command
+handles the full lifecycle on its own:
+
+```bash
+npm run test:integration
+```
+
+This starts `docker-compose.test.yml` (Postgres on port 5434, so it won't
+collide with another local database), applies migrations using `.env.test`,
+runs the suite, and tears the container down afterward, win or lose. Requires
+Docker to be running locally; no other setup is needed since `.env.test` is
+committed with disposable, non-production credentials. Outbound email is
+mocked in these tests, so nothing is actually sent.
 
 ## Project structure
 
